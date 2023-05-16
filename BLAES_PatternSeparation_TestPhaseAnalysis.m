@@ -1200,6 +1200,96 @@ if size(ResponseKeys,2) == 2
 
 end
 
+%% Response to Lures ("New" - "Old")
+%Proportion of "New"-Lure responses minues the number of "Old"-Lure responses
+%for each category (Stim/NoStim) out of the total possible
+labelstring = {'Lure-Old-NoStim','Lure-Old-Stim','Lure-New-NoStim','Lure-New-Stim'};
+textStartY = 0.30;
+textStepY  = 0.05;
+
+ResptoLuresFig = figure('Position',figsize);
+b = bar([((sum(ObjectLureMiss_NoStim))/(TotalObjectLureHitNoStim)) - ((sum(ObjectLureHit_NoStim))/(TotalObjectLureHitNoStim)); ((sum(ObjectLureMiss_Stim))/(TotalObjectLureHitStim)) - ((sum(ObjectLureHit_Stim))/(TotalObjectLureHitStim))],'FaceColor','Flat');
+
+
+b.CData(1,:) = [0 0.4470 0.7410]; %dark blue nostim
+b.CData(2,:) = [0.6350 0.0780 0.1840]; %dark red stim
+
+
+
+
+
+text(2.45,textStartY,'Raw Responses:','FontSize',18,'fontweight','bold')
+for i = 1:size(labelstring,2)
+    text(2.45,textStartY-i*textStepY,labelstring(i),'FontSize',18)
+end
+text(2.85,textStartY-1*textStepY,num2str(sum(ObjectLureHit_NoStim)),'FontSize',18)
+text(2.85,textStartY-2*textStepY,num2str(sum(ObjectLureHit_Stim)),'FontSize',18)
+text(2.85,textStartY-3*textStepY,num2str(sum(ObjectLureMiss_NoStim)),'FontSize',18)
+text(2.85,textStartY-4*textStepY,num2str(sum(ObjectLureMiss_Stim)),'FontSize',18)
+
+set(gca,'XTick',[1 2],'XTickLabel',{'No-Stim','Stim'})
+ylabel('Response to Lures (New-Old)')
+set(gca,'YTick',-0.5:0.1:0.5,'YTickLabel',1*round(-0.5:0.1:0.5,2))
+set(gca,'FontName','Arial','FontSize',24,'LineWidth',2,'Box','off')
+axis([0.5 3.0 -0.5 0.5])
+title([subjID, ' ', RetrievalDelay ' Responses to Lures (out of total)'])
+
+fprintf('Saving novel images Figure...\n')
+savefile = fullfile(cd, 'figures', subjID, strcat(subjID, '_', RetrievalDelay, SureResponseString,'_Loglinear', '_ResponseToLures.png'));
+
+saveas(ResptoLuresFig, [savefile(1:end-4) '.png'],'png');
+fprintf('Done\n')
+
+
+
+%% Response to Lures ("New" - "Old") (Sure only for total number of "sure" images)
+%Proportion of "New"-Lure responses minues the number of "Old"-Lure responses
+%for each category (Stim/NoStim) out of the total possible
+
+%This analysis/figure only runs when the two "sure" key responses are given
+%in lines 36/37
+
+if size(ResponseKeys,2) == 2
+
+    labelstring = {'Lure-Old-NoStim','Lure-Old-Stim','Lure-New-NoStim','Lure-New-Stim'};
+    textStartY = 0.30;
+    textStepY  = 0.05;
+    
+    ActualSUREResptoLuresFig = figure('Position',figsize);
+    b = bar([((sum(ObjectLureMiss_NoStim))/(sum(ObjectLureHit_NoStim) + sum(ObjectLureMiss_NoStim))) - ((sum(ObjectLureHit_NoStim))/(sum(ObjectLureHit_NoStim) + sum(ObjectLureMiss_NoStim))); ((sum(ObjectLureMiss_Stim))/(sum(ObjectLureHit_Stim) + sum(ObjectLureMiss_Stim))) - ((sum(ObjectLureHit_Stim))/(sum(ObjectLureHit_Stim) + sum(ObjectLureMiss_Stim)))],'FaceColor','Flat');
+    
+    
+    b.CData(1,:) = [0 0.4470 0.7410]; %dark blue nostim
+    b.CData(2,:) = [0.6350 0.0780 0.1840]; %dark red stim
+    
+    
+    
+    
+    
+    text(2.45,textStartY,'Raw Responses:','FontSize',18,'fontweight','bold')
+    for i = 1:size(labelstring,2)
+        text(2.45,textStartY-i*textStepY,labelstring(i),'FontSize',18)
+    end
+    text(2.85,textStartY-1*textStepY,strcat(num2str(sum(ObjectLureHit_NoStim)),' (out of ',num2str(sum(ObjectLureHit_NoStim) + sum(ObjectLureMiss_NoStim)), ')'),'FontSize',18)
+    text(2.85,textStartY-2*textStepY,strcat(num2str(sum(ObjectLureHit_Stim)),' (out of ',num2str(sum(ObjectLureHit_Stim) + sum(ObjectLureMiss_Stim)), ')'),'FontSize',18)
+    text(2.85,textStartY-3*textStepY,strcat(num2str(sum(ObjectLureMiss_NoStim)),' (out of ',num2str(sum(ObjectLureHit_NoStim) + sum(ObjectLureMiss_NoStim)), ')'),'FontSize',18)
+    text(2.85,textStartY-4*textStepY,strcat(num2str(sum(ObjectLureMiss_Stim)),' (out of ',num2str(sum(ObjectLureHit_Stim) + sum(ObjectLureMiss_Stim)), ')'),'FontSize',18)
+
+    
+    set(gca,'XTick',[1 2],'XTickLabel',{'No-Stim','Stim'})
+    ylabel('Response to Lures (New-Old)')
+    set(gca,'YTick',-0.5:0.1:0.5,'YTickLabel',1*round(-0.5:0.1:0.5,2))
+    set(gca,'FontName','Arial','FontSize',24,'LineWidth',2,'Box','off')
+    axis([0.5 3.0 -0.5 0.5])
+    title([subjID, ' ', RetrievalDelay ' Responses to Lures (out of sure)'])
+    
+    fprintf('Saving novel images Figure...\n')
+    savefile = fullfile(cd, 'figures', subjID, strcat(subjID, '_', RetrievalDelay, SureResponseString,'_Loglinear', '_ActualSUREResponseToLures.png'));
+    
+    saveas(ActualSUREResptoLuresFig, [savefile(1:end-4) '.png'],'png');
+    fprintf('Done\n')
+end
+
 
 
 end

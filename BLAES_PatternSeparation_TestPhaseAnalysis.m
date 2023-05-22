@@ -432,15 +432,15 @@ if size(ResponseKeys,2) == 2
 end
 
 
-%% Corrected pattern separation for objects no stim, objects stim
-% break out stim and nostim (proportion of lure trials eliciting a correct response of "no/new" minus the proportion of novel foil trials eliciting a response of "no/new")
+%% Lure Discrimination Index/Corrected pattern separation for objects no stim, objects stim
+% break out stim and nostim (proportion of lure trials eliciting a correct response of "no/new" minus the proportion of old target trials eliciting a response of "no/new")
 
-labelstring = {'"New"-NoStim-Lure','"New"-Stim-Lure','"New"-Foil'};
+labelstring = {'"New"-NoStim-Lure','"New"-Stim-Lure','"New"-NoStim-Target','"New"-Stim-Target'};
 textStartY = 0.75;
 textStepY  = 0.05;
 
 CorrectedPatternSepFig = figure('Position',figsize);
-b = bar([((sum(ObjectLureMiss_NoStim))/(TotalObjectLureHitNoStim))-((sum(ObjectRejection))/(TotalObjectFA));    ((sum(ObjectLureMiss_Stim))/(TotalObjectLureHitStim))-((sum(ObjectRejection))/(TotalObjectFA))],'FaceColor','Flat');
+b = bar([((sum(ObjectLureMiss_NoStim))/(TotalObjectLureHitNoStim))-((sum(ObjectTargMiss_NoStim))/(TotalObjectTargHitNoStim));    ((sum(ObjectLureMiss_Stim))/(TotalObjectLureHitStim))-((sum(ObjectTargMiss_Stim))/(TotalObjectTargHitStim))],'FaceColor','Flat');
 
 b.CData(1,:) = [0 0 1]; %blue
 b.CData(2,:) = [1 0 0]; %red
@@ -470,15 +470,15 @@ for i = 1:size(labelstring,2)
 end
 text(2.94,textStartY-1*textStepY,num2str(sum(ObjectLureMiss_NoStim)),'FontSize',18)
 text(2.94,textStartY-2*textStepY,num2str(sum(ObjectLureMiss_Stim)),'FontSize',18)
-text(2.94,textStartY-3*textStepY,num2str(sum(ObjectRejection)),'FontSize',18)
-
+text(2.94,textStartY-3*textStepY,num2str(sum(ObjectTargMiss_NoStim)),'FontSize',18)
+text(2.94,textStartY-4*textStepY,num2str(sum(ObjectTargMiss_Stim)),'FontSize',18)
 
 set(gca,'XTick',[1 2],'XTickLabel',{'NoStim','Stim'})
-ylabel('Corrected Pattern Separation (of Total)')
+ylabel('LDI')
 set(gca,'YTick',-1:0.25:1,'YTickLabel',1*round(-1:0.25:1,2))
 set(gca,'FontName','Arial','FontSize',24,'LineWidth',2,'Box','off')
 axis([0.5 3.0 -1 1])
-title([subjID, ' ', RetrievalDelay ' Corrected Pattern Separation (out of total images)'])
+title([subjID, ' ', RetrievalDelay ' Lure Discrimination Index (out of total images)'])
 
 % %Create Legend
 % legendData = {'No Stim', 'Stim'};
@@ -502,8 +502,8 @@ fprintf('Done\n')
 
 
 
-%% Corrected pattern separation for objects no stim, objects stim
-% break out stim and nostim (proportion of lure trials eliciting a correct response of "no/new" minus the proportion of novel foil trials eliciting a response of "no/new")
+%% Lure Discrimination Index/Corrected pattern separation for objects no stim, objects stim
+% break out stim and nostim (proportion of lure trials eliciting a correct response of "no/new" minus the proportion of old target trials eliciting a response of "no/new")
  
 % (ACTUAL corrected pattern separation -- Sure only for total number of "sure" images)
 
@@ -511,12 +511,12 @@ fprintf('Done\n')
 %in lines 36/37
 if size(ResponseKeys,2) == 2
 
-    labelstring = {'"New"-NoStim-Lure','"New"-Stim-Lure','"New"-Foil'};
+    labelstring = {'"New"-NoStim-Lure','"New"-Stim-Lure','"New"-NoStim-Target','"New"-Stim-Target'};
     textStartY = 0.75;
     textStepY  = 0.05;
     
     ActualCorrectedPattSepSureFig = figure('Position',figsize);
-    b = bar([((sum(ObjectLureMiss_NoStim))/(sum(ObjectLureMiss_NoStim)+sum(ObjectLureHit_NoStim)))-((sum(ObjectRejection))/(sum(ObjectRejection)+sum(ObjectFalseAlarm)));    ((sum(ObjectLureMiss_Stim))/(sum(ObjectLureMiss_Stim)+sum(ObjectLureHit_Stim)))-((sum(ObjectRejection))/(sum(ObjectRejection)+sum(ObjectFalseAlarm)))],'FaceColor','Flat');
+    b = bar([((sum(ObjectLureMiss_NoStim))/(sum(ObjectLureMiss_NoStim)+sum(ObjectLureHit_NoStim)))-((sum(ObjectTargMiss_NoStim))/(sum(ObjectTargMiss_NoStim)+sum(ObjectTargHit_NoStim)));    ((sum(ObjectLureMiss_Stim))/(sum(ObjectLureMiss_Stim)+sum(ObjectLureHit_Stim)))-((sum(ObjectTargMiss_Stim))/(sum(ObjectTargMiss_Stim)+sum(ObjectTargHit_Stim)))],'FaceColor','Flat');
 
 
     b.CData(1,:) = [0 0 1];
@@ -548,15 +548,16 @@ if size(ResponseKeys,2) == 2
     
     text(2.94,textStartY-1*textStepY,strcat(num2str(sum(ObjectLureMiss_NoStim)),' (out of ',num2str(sum(ObjectLureMiss_NoStim)+sum(ObjectLureHit_NoStim)), ')'),'FontSize',18)
     text(2.94,textStartY-2*textStepY,strcat(num2str(sum(ObjectLureMiss_Stim)),' (out of ',num2str(sum(ObjectLureMiss_Stim)+sum(ObjectLureHit_Stim)), ')'),'FontSize',18)
-    text(2.94,textStartY-3*textStepY,strcat(num2str(sum(ObjectRejection)),' (out of ',num2str(sum(ObjectRejection)+sum(ObjectFalseAlarm)), ')'),'FontSize',18)
+    text(2.94,textStartY-3*textStepY,strcat(num2str(sum(ObjectTargMiss_NoStim)),' (out of ',num2str(sum(ObjectTargMiss_NoStim)+sum(ObjectTargHit_NoStim)), ')'),'FontSize',18)
+    text(2.94,textStartY-4*textStepY,strcat(num2str(sum(ObjectTargMiss_Stim)),' (out of ',num2str(sum(ObjectTargMiss_Stim)+sum(ObjectTargHit_Stim)), ')'),'FontSize',18)
 
 
     set(gca,'XTick',[1 2],'XTickLabel',{'NoStim','Stim'})
-    ylabel('Corrected Pattern Separation (of Sure)')
+    ylabel('LDI')
     set(gca,'YTick',-1:0.25:1,'YTickLabel',1*round(-1:0.25:1,2))
     set(gca,'FontName','Arial','FontSize',24,'LineWidth',2,'Box','off')
     axis([0.5 3.0 -1 1])
-    title([subjID, ' ', RetrievalDelay ' Actual Corrected Pattern Separation (out of sure only responses)'])
+    title([subjID, ' ', RetrievalDelay ' Actual Lure Discrimination Index (out of sure only responses)'])
     
 %     %Create Legend
 %     legendData = {'No Stim', 'Stim'};
@@ -578,6 +579,7 @@ if size(ResponseKeys,2) == 2
     fprintf('Done\n')
 
 end
+
 
 
 

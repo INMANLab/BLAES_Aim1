@@ -1292,6 +1292,199 @@ if size(ResponseKeys,2) == 2
     fprintf('Done\n')
 end
 
+%% Lure Dprime
+%Takes into account the lure correct rejections ("new" - lure) and false
+%positive responses ("old" - lure)
+[dp(1,1), c(1)] = dprime_simple((sum(ObjectLureMiss_NoStim) + 0.5)/(TotalObjectLureHitNoStim + 1),(sum(ObjectLureHit_NoStim) + 0.5)/(TotalObjectLureHitNoStim + 1));         % nostim 
+[dp(1,2), c(2)] = dprime_simple((sum(ObjectLureMiss_Stim) + 0.5)/(TotalObjectLureHitStim + 1),(sum(ObjectLureHit_Stim) + 0.5)/(TotalObjectLureHitStim + 1));             % stim 
+
+
+
+dp(isinf(dp)) = NaN;
+
+%For y axis limit locked at 4.0
+ylim = [min([min(dp,[],'omitnan'),0])-0.1 max(4.0)];
+
+%For variable y axis limit
+%ylim = [min([min(dp,[],'omitnan'),0])-0.1 max([max(dp,[],'omitnan'),0])+0.1];
+
+          
+clabelstring    = {'lure nostim', 'lure stim'};
+textStartY = max(max(dp,[],'omitnan')) - 0.15*max(max(dp,[],'omitnan'));
+textStepY  = max(max(dp,[],'omitnan'))/20;
+
+luredprimefig = figure('Position',figsize);
+b = bar(dp,'FaceColor','flat');
+
+b.CData(1,:) = [0 0 1];
+b.CData(2,:) = [1 0 0];
+
+
+
+text(3.0,3.0,'Criterion:','FontSize',18,'fontweight','bold')
+text(3.0,2.3,'Dprime:','FontSize',18,'fontweight','bold')
+
+%Plot dprime values
+DText1 = {'NoStim: '};
+DText1a = {strcat('  ',num2str(dp(1,1),3))};
+DText2 = {'Stim: '};
+DText2a = {strcat('  ',num2str(dp(1,2),3))};
+
+
+text(3.0, 2.2, DText1,'FontSize',15)
+text(3.5, 2.2, DText1a,'FontSize',15)
+text(3.0, 2.1, DText2,'FontSize',15)
+text(3.5, 2.1, DText2a,'FontSize',15)
+
+
+
+
+
+
+%Plot Criterion text for when yaxis is locked at dprime of 4.0
+Text1 = {'NoStim: '};
+Text1a = {strcat('  ',num2str(c(1),3))};
+Text2 = {'Stim: '};
+Text2a = {strcat('  ',num2str(c(2),3))};
+
+
+
+text(3.0, 2.9, Text1,'FontSize',15)
+text(3.5, 2.9, Text1a,'FontSize',15)
+text(3.0, 2.8, Text2,'FontSize',15)
+text(3.5, 2.8, Text2a,'FontSize',15)
+
+
+
+
+
+set(gca,'XTick',[1 2],'XTickLabel',{'NoStim','Stim'})
+ylabel('lure dprime')
+set(gca,'FontName','Arial','FontSize',24,'LineWidth',2,'Box','off')
+axis([0.5 4.5 ylim])
+title([subjID, ' ', RetrievalDelay ' Lure Dprime (out of total images)'])
+
+%Create plot text that lists the difference in dprime for stim vs. nostim
+plottext1 = {'Lure Dprime Diff: '};
+plottext2 = {strcat('  ',num2str(abs(dprime_simple((sum(ObjectLureMiss_NoStim) + 0.5)/(TotalObjectLureHitNoStim + 1),(sum(ObjectLureHit_NoStim) + 0.5)/(TotalObjectLureHitNoStim + 1))-dprime_simple((sum(ObjectLureMiss_Stim) + 0.5)/(TotalObjectLureHitStim + 1),(sum(ObjectLureHit_Stim) + 0.5)/(TotalObjectLureHitStim + 1))),3))};
+
+
+
+
+%Set the positioning of the above text
+text(0.8, 3.8, plottext1,'FontSize',19)
+text(0.8, 3.6, plottext2,'FontSize',19)
+
+
+
+
+
+fprintf('Saving d prime figure...\n')
+savefile = fullfile(cd, 'figures', subjID, strcat(subjID, '_', RetrievalDelay, SureResponseString,'_Loglinear', '_luredprime.png'));
+
+saveas(luredprimefig, [savefile(1:end-4) '.png'],'png');
+fprintf('Done\n')
+
+
+
+%% Lure Dprime
+%Takes into account the lure correct rejections ("new" - lure) and false
+%positive responses ("old" - lure)
+
+%This analysis/figure only runs when the two "sure" key responses are given
+%in lines 36/37
+
+if size(ResponseKeys,2) == 2
+
+    [dp(1,1), c(1)] = dprime_simple((sum(ObjectLureMiss_NoStim) + 0.5)/(sum(ObjectLureHit_NoStim) + sum(ObjectLureMiss_NoStim) + 1),(sum(ObjectLureHit_NoStim) + 0.5) /(sum(ObjectLureHit_NoStim) + sum(ObjectLureMiss_NoStim) + 1));         % nostim 
+    [dp(1,2), c(2)] = dprime_simple((sum(ObjectLureMiss_Stim) + 0.5)/(sum(ObjectLureHit_Stim) + sum(ObjectLureMiss_Stim) + 1),(sum(ObjectLureHit_Stim) + 0.5)/(sum(ObjectLureHit_Stim) + sum(ObjectLureMiss_Stim) + 1));             % stim 
+    
+    
+    dp(isinf(dp)) = NaN;
+    
+    %For y axis limit locked at 4.0
+    ylim = [min([min(dp,[],'omitnan'),0])-0.1 max(4.0)];
+    
+    %For variable y axis limit
+    %ylim = [min([min(dp,[],'omitnan'),0])-0.1 max([max(dp,[],'omitnan'),0])+0.1];
+    
+              
+    clabelstring    = {'lure nostim', 'lure stim'};
+    textStartY = max(max(dp,[],'omitnan')) - 0.15*max(max(dp,[],'omitnan'));
+    textStepY  = max(max(dp,[],'omitnan'))/20;
+    
+  
+    Actualluredprimefig = figure('Position',figsize);
+    
+    b = bar(dp,'FaceColor','flat');
+
+    b.CData(1,:) = [0 0 1];
+    b.CData(2,:) = [1 0 0];
+    
+
+    text(3.0,3.0,'Criterion:','FontSize',18,'fontweight','bold')
+    text(3.0,2.3,'Dprime:','FontSize',18,'fontweight','bold')
+    
+    %Plot dprime values
+    DText1 = {'NoStim: '};
+    DText1a = {strcat('  ',num2str(dp(1,1),3))};
+    DText2 = {'Stim: '};
+    DText2a = {strcat('  ',num2str(dp(1,2),3))};
+    
+    
+    text(3.0, 2.2, DText1,'FontSize',15)
+    text(3.5, 2.2, DText1a,'FontSize',15)
+    text(3.0, 2.1, DText2,'FontSize',15)
+    text(3.5, 2.1, DText2a,'FontSize',15)
+    
+    
+    
+    
+    
+    
+    %Plot Criterion text for when yaxis is locked at dprime of 4.0
+    Text1 = {'NoStim: '};
+    Text1a = {strcat('  ',num2str(c(1),3))};
+    Text2 = {'Stim: '};
+    Text2a = {strcat('  ',num2str(c(2),3))};
+    
+    
+    
+    text(3.0, 2.9, Text1,'FontSize',15)
+    text(3.5, 2.9, Text1a,'FontSize',15)
+    text(3.0, 2.8, Text2,'FontSize',15)
+    text(3.5, 2.8, Text2a,'FontSize',15)
+    
+    
+    
+    set(gca,'XTick',[1 2],'XTickLabel',{'NoStim','Stim'})
+    ylabel('lure dprime')
+    set(gca,'FontName','Arial','FontSize',24,'LineWidth',2,'Box','off')
+    axis([0.5 4.5 ylim])
+    title([subjID, ' ', RetrievalDelay ' Actual Lure Dprime (out of sure only responses)'])
+    
+    %Create plot text that lists the difference in dprime for stim vs. nostim
+    plottext1 = {'Lure Dprime Diff: '};
+    plottext2 = {strcat('  ',num2str(abs(dprime_simple((sum(ObjectLureMiss_NoStim) + 0.5)/(sum(ObjectLureHit_NoStim) + sum(ObjectLureMiss_NoStim) + 1),(sum(ObjectLureHit_NoStim) + 0.5) /(sum(ObjectLureHit_NoStim) + sum(ObjectLureMiss_NoStim) + 1))-dprime_simple((sum(ObjectLureMiss_Stim) + 0.5)/(sum(ObjectLureHit_Stim) + sum(ObjectLureMiss_Stim) + 1),(sum(ObjectLureHit_Stim) + 0.5)/(sum(ObjectLureHit_Stim) + sum(ObjectLureMiss_Stim) + 1))),3))};
+        
+
+
+    %Set the positioning of the above text
+    text(0.8, 3.8, plottext1,'FontSize',19)
+    text(0.8, 3.6, plottext2,'FontSize',19)
+    
+    
+    
+    
+    
+    fprintf('Saving d prime figure...\n')
+    savefile = fullfile(cd, 'figures', subjID, strcat(subjID, '_', RetrievalDelay, SureResponseString,'_Loglinear', '_ActualSureluredprime.png'));
+    
+    saveas(Actualluredprimefig, [savefile(1:end-4) '.png'],'png');
+    fprintf('Done\n')
+
+end
+
 
 
 end

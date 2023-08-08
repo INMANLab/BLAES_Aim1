@@ -1057,7 +1057,7 @@ text(3.4,textStartY-2*textStepY,num2str(sum(ObjectLureHit_Stim)),'FontSize',18)
 text(3.4,textStartY-3*textStepY,num2str(sum(ObjectLureMiss_NoStim)),'FontSize',18)
 text(3.4,textStartY-4*textStepY,num2str(sum(ObjectLureMiss_Stim)),'FontSize',18)
 
-set(gca,'XTick',[1 2 3 4],'XTickLabel',{'NoStim-Hit','Stim-Hit','NoStim-Miss','Stim-Miss'})
+set(gca,'XTick',[1 2 3 4],'XTickLabel',{'NoStim-FalsePos','Stim-FalsePos','NoStim-CorrRej','Stim-CorrRej'})
 ylabel('Occurrences (% of Total)')
 set(gca,'YTick',0:0.25:1,'YTickLabel',100*round(0:0.25:1,2))
 set(gca,'FontName','Arial','FontSize',24,'LineWidth',2,'Box','off')
@@ -1107,7 +1107,7 @@ if size(ResponseKeys,2) == 2
 
 
 
-    set(gca,'XTick',[1 2 3 4],'XTickLabel',{'NoStim-Hit','Stim-Hit','NoStim-Miss','Stim-Miss'})
+    set(gca,'XTick',[1 2 3 4],'XTickLabel',{'NoStim-FalsePos','Stim-FalsePos','NoStim-CorrRej','Stim-CorrRej'})
     ylabel('Occurrences (% of Sure)')
     set(gca,'YTick',0:0.25:1,'YTickLabel',100*round(0:0.25:1,2))
     set(gca,'FontName','Arial','FontSize',24,'LineWidth',2,'Box','off')
